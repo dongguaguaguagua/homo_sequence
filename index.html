@@ -82,7 +82,6 @@
         katexString = equationBuilder(coefficients)
         verifyString = verifyBuilder(yValues)
         katex.render(katexString, resultDiv);
-        console.log(verifyString)
         katex.render(verifyString, verifyDiv);
       } catch (error) {
         resultDiv.textContent = `Error: ${error.message}`;

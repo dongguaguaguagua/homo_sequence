@@ -117,14 +117,23 @@ function calculateCoefficients(xValues, yValues) {
     });
     const Y = yValues.map(y => {return decimalToFraction(y)})
     const XInverse = invertMatrix(X);
+    const beta = multiplyMatrixVector(XInverse, Y)
 
-    const beta = XInverse.map(row => {
-        return row.reduce((sum, value, i) =>
-            simplifyFraction(
-                addFractions(sum, multiplyFractions(value, Y[i])), "0/1")
-            );
-    });
     return beta;
+}
+
+function multiplyMatrixVector(XInverse, Y) {
+    const n = XInverse.length;
+    let result = new Array(n).fill("0/1");
+
+    for (let i = 0; i < n; i++) {
+        for (let j = 0; j < n; j++) {
+            result[i] = simplifyFraction(
+                addFractions(result[i], multiplyFractions(XInverse[i][j], Y[j]))
+            );
+        }
+    }
+    return result;
 }
 
 function equationBuilder(coefficients) {
