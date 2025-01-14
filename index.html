@@ -54,7 +54,7 @@
     <h2>注意到</h2><h3>下一项是<select id="echou_number" onchange="main_func()">
         <option value="114514">114514</option>
         <option value="1919810">1919810</option>
-    </select>因为</h3>
+    </select>，因为</h3>
     <div id="result"></div>
     <h3>容易验证</h3>
     <div id="verify"></div>
@@ -72,8 +72,8 @@
       katex.render(String.raw`\text{Render Element}`, document.getElementById('result'));
 
       try {
-        // const xValues = xValuesInput.value.split(',').map(x => {return Big(x)});
-        const yValues = yValuesInput.value.split(',')
+        const yValues = yValuesInput.value.replaceAll('，', ',')
+          .split(',')
           .filter(value => value.trim() !== '')
           .map(y => Big(y));
         yValues.push(Big(selectedValue))
