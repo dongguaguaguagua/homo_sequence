@@ -38,6 +38,10 @@
       background-color: #f9f9f9;
       border: 1px solid #ddd;
     }
+    .katex .katex-html {
+      line-height: 3;
+    }
+
   </style>
 </head>
 <body>
@@ -45,28 +49,25 @@
     <h1>恶臭规律论证器</h1>
     <label for="yValues">请输入规律</label>
     <textarea id="yValues" rows="2" placeholder="请用英文逗号隔开" oninput="main_func()"></textarea>
-
-<!--     <label for="yValues">Enter y values (e.g., 6, 17, 34):</label>
-    <textarea id="yValues" rows="2" placeholder="Enter y values here"></textarea>
- -->
-    <!-- <button id="calculateButton">计算一下</button> -->
-
-    <h2>注意到</h2><h3>下一项是<select id="echou_number" onchange="main_func()">
-        <option value="114514">114514</option>
-        <option value="1919810">1919810</option>
-    </select>，因为</h3>
-    <div id="result"></div>
-    <h3>容易验证</h3>
-    <div id="verify"></div>
+    <div id="solution">
+      <h2>注意到</h2><h3>下一项是<select id="echou_number" onchange="main_func()">
+          <option value="114514">114514</option>
+          <option value="1919810">1919810</option>
+      </select>，因为</h3>
+      <div id="result"></div>
+      <h3>容易验证</h3>
+      <div id="verify"></div>
+    </div>
   </div>
 <script src="echou.js"></script>
 <script>
-    function main_func(){
+    async function main_func(){
       // 获取 DOM 元素
       const yValuesInput = document.getElementById('yValues');
       const calculateButton = document.getElementById('calculateButton');
       const resultDiv = document.getElementById('result');
       const verifyDiv = document.getElementById('verify');
+      const solutionDiv = document.getElementById('solution');
       var selectedValue = document.getElementById("echou_number").value;
 
       katex.render(String.raw`\text{Render Element}`, document.getElementById('result'));
@@ -77,12 +78,18 @@
           .filter(value => value.trim() !== '')
           .map(y => Big(y));
         yValues.push(Big(selectedValue))
-        const xValues = Array.from({ length: yValues.length }, (_, index) => Big(index + 1));
-        const coefficients = calculateCoefficients(xValues, yValues)
-        katexString = equationBuilder(coefficients)
-        verifyString = verifyBuilder(yValues)
-        katex.render(katexString, resultDiv);
-        katex.render(verifyString, verifyDiv);
+        if (yValues.length >= 20){
+          katex.render(String.raw`\text{注意不到了（悲}`, resultDiv);
+          katex.render(String.raw``, verifyDiv);
+        } else{
+          const xValues = Array.from({ length: yValues.length }, (_, index) => Big(index + 1));
+          const coefficients = await calculateCoeff_fromJSON(xValues, yValues)
+          katexString = equationBuilder(coefficients)
+          verifyString = verifyBuilder(yValues)
+          katex.render(katexString, resultDiv);
+          // console.log(katexString)
+          katex.render(verifyString, verifyDiv);
+        }
       } catch (error) {
         resultDiv.textContent = `Error: ${error.message}`;
       }

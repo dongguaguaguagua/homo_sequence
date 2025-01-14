@@ -71,21 +71,17 @@ function subtractFractions(frac1, frac2) {
 function invertMatrix(matrix) {
     const size = matrix.length;
     let fractionsMatrix = matrix.map(row => row.map(decimalToFraction));
-
-    // 初始化单位矩阵
     let identityMatrix = Array.from({ length: size }, (_, i) => {
         return Array.from({ length: size }, (_, j) => (i === j ? "1/1" : "0/1"));
     });
 
     for (let i = 0; i < size; i++) {
-        // 获取对角线元素并将其化为1
         let diagElement = fractionsMatrix[i][i];
         for (let j = 0; j < size; j++) {
             fractionsMatrix[i][j] = divideFractions(fractionsMatrix[i][j], diagElement);
             identityMatrix[i][j] = divideFractions(identityMatrix[i][j], diagElement);
         }
 
-        // 将其他行的对应列归零
         for (let k = 0; k < size; k++) {
             if (k === i) continue;
             let factor = fractionsMatrix[k][i];
@@ -122,6 +118,25 @@ function calculateCoefficients(xValues, yValues) {
     return beta;
 }
 
+async function calculateCoeff_fromJSON(xValues, yValues) {
+    const n = yValues.length;
+    try {
+        const response = await fetch('matrix.json');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        const inv_matirx = data[n];
+
+        const Y = yValues.map(y => { return decimalToFraction(y); });
+        const beta = multiplyMatrixVector(inv_matirx, Y);
+        return beta;
+    } catch (error) {
+        console.error('读取 JSON 错误:', error);
+    }
+}
+
+
 function multiplyMatrixVector(XInverse, Y) {
     const n = XInverse.length;
     let result = new Array(n).fill("0/1");
@@ -143,12 +158,8 @@ function equationBuilder(coefficients) {
             return a.gt(0) ?
         `\\frac{${a.abs()}}{${b}} x` : `-\\frac{${a.abs()}}{${b}} x`
         }
-        // if (index == 1) {
-        //     return a.gt(0) ?
-        // `+\\frac{${a.abs()}}{${b}} x` : `-\\frac{${a.abs()}}{${b}} x`
-        // }
-        if (a.gt(0)) return `+\\frac{${a.abs()}}{${b}} x^${index + 1}`;
-        else return `-\\frac{${a.abs()}}{${b}} x^${index + 1}`
+        if (a.gt(0)) return `+\\frac{${a.abs()}}{${b}} x^{${index + 1}}`;
+        else return `-\\frac{${a.abs()}}{${b}} x^{${index + 1}}`
     });
     const equation = `f(x) = ${terms.join('')}`;
 
