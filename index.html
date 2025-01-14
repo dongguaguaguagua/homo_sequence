@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculate Beta Coefficients</title>
+  <title>恶臭规律论证器</title>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.20/dist/katex.min.css">
   <script src="https://cdn.jsdelivr.net/npm/katex@0.16.20/dist/katex.min.js"></script>
@@ -13,6 +13,7 @@
     body {
       font-family: Arial, sans-serif;
       margin: 20px;
+      background-color: #a7b0aa;
     }
     .container {
       max-width: 600px;
@@ -24,18 +25,9 @@
       padding: 10px;
       font-size: 16px;
     }
-    button {
-      cursor: pointer;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    .result {
+    .solution {
       padding: 10px;
-      background-color: #f9f9f9;
+      background-color: #d1c9c4;
       border: 1px solid #ddd;
     }
     .katex .katex-html {
@@ -49,10 +41,12 @@
     <h1>恶臭规律论证器</h1>
     <label for="yValues">请输入规律</label>
     <textarea id="yValues" rows="2" placeholder="请用英文逗号隔开" oninput="main_func()"></textarea>
-    <div id="solution">
+    <div class = "solution" id="solution">
       <h2>注意到</h2><h3>下一项是<select id="echou_number" onchange="main_func()">
           <option value="114514">114514</option>
           <option value="1919810">1919810</option>
+          <option value="114514.1919810">114514.1919810</option>
+          <option value="1145141919810">1145141919810</option>
       </select>，因为</h3>
       <div id="result"></div>
       <h3>容易验证</h3>
@@ -62,15 +56,14 @@
 <script src="echou.js"></script>
 <script>
     async function main_func(){
-      // 获取 DOM 元素
       const yValuesInput = document.getElementById('yValues');
-      const calculateButton = document.getElementById('calculateButton');
       const resultDiv = document.getElementById('result');
       const verifyDiv = document.getElementById('verify');
       const solutionDiv = document.getElementById('solution');
       var selectedValue = document.getElementById("echou_number").value;
 
-      katex.render(String.raw`\text{Render Element}`, document.getElementById('result'));
+      katex.render(String.raw`\text{Computing...}`, resultDiv);
+      katex.render(String.raw`\text{Verifing...}`, verifyDiv);
 
       try {
         const yValues = yValuesInput.value.replaceAll('，', ',')
