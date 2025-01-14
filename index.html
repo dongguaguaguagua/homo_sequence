@@ -19,7 +19,7 @@
       max-width: 600px;
       margin: auto;
     }
-    textarea, input, button {
+    textarea, input {
       width: 100%;
       margin-bottom: 15px;
       padding: 10px;
@@ -28,12 +28,25 @@
     .solution {
       padding: 10px;
       background-color: #d1c9c4;
-      border: 1px solid #ddd;
     }
     .katex .katex-html {
       line-height: 3;
     }
-
+    #copyButton {
+        position: absolute;
+        top: 30px;
+        right: 10px;
+        padding: 5px 10px;
+        font-size: 12px;
+        border: none;
+        background-color: #ad887a;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    #copyButton:hover {
+        background-color: #9c7366;
+    }
   </style>
 </head>
 <body>
@@ -41,7 +54,8 @@
     <h1>恶臭规律论证器</h1>
     <label for="yValues">请输入规律</label>
     <textarea id="yValues" rows="2" placeholder="请用英文逗号隔开" oninput="main_func()"></textarea>
-    <div class = "solution" id="solution">
+    <div class = "solution" id="solution" style="position: relative;">
+      <button id="copyButton" onclick="copyToClipboard()">Copy</button>
       <h2>注意到</h2><h3>下一项是<select id="echou_number" onchange="main_func()">
           <option value="114514">114514</option>
           <option value="1919810">1919810</option>
@@ -55,6 +69,7 @@
   </div>
 <script src="echou.js"></script>
 <script>
+    window.onload = main_func();
     async function main_func(){
       const yValuesInput = document.getElementById('yValues');
       const resultDiv = document.getElementById('result');
@@ -86,6 +101,17 @@
       } catch (error) {
         resultDiv.textContent = `Error: ${error.message}`;
       }
+    }
+    function copyToClipboard() {
+        const button = document.getElementById('copyButton');
+        navigator.clipboard.writeText(katexString).then(function() {})
+        .catch(function(err) {
+            alert('Failed to copy text: ' + err);
+        });
+        button.textContent = 'Copied';
+        setTimeout(function() {
+          button.textContent = 'Copy';
+        }, 3000);
     }
 </script>
 </body>
