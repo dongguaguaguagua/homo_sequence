@@ -38,19 +38,34 @@
       line-height: 3;
     }
     #copyButton {
-        position: absolute;
-        top: 80px;
-        right: 10px;
-        padding: 5px 10px;
-        font-size: 12px;
-        border: none;
-        background-color: #ad887a;
-        color: white;
-        cursor: pointer;
-        border-radius: 5px;
+      position: absolute;
+      top: 85px;
+      right: 10px;
+      padding: 5px 10px;
+      font-size: 12px;
+      border: none;
+      background-color: #ad887a;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    #openDesmos {
+      position: absolute;
+      top: 85px;
+      right: 80px;
+      padding: 5px 10px;
+      font-size: 12px;
+      border: none;
+      background-color: #ad887a;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
     }
     #copyButton:hover {
-        background-color: #9c7366;
+      background-color: #9c7366;
+    }
+    #openDesmos:hover {
+      background-color: #9c7366;
     }
   </style>
 </head>
@@ -61,6 +76,7 @@
     <textarea id="yValues" rows="2" placeholder="请用英文逗号隔开" oninput="main_func()"></textarea>
     <div class = "solution" id="solution" style="position: relative;">
       <button id="copyButton" onclick="copyToClipboard()">Copy</button>
+      <button id="openDesmos" onclick="openDesmos()">Open in Desmos</button>
       <h2>注意到</h2><h3>下一项是<select id="echou_number" onchange="main_func()">
           <option value="114514">114514</option>
           <option value="1919810">1919810</option>
@@ -77,6 +93,10 @@
     <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="32" height="32" viewBox="0 0 16 16">
     <path d="M 7.5 1 C 3.910156 1 1 3.90625 1 7.488281 C 1 10.355469 2.863281 12.789063 5.445313 13.648438 C 5.769531 13.707031 6 13.375 6 13.125 C 6 12.972656 6.003906 12.789063 6 12.25 C 4.191406 12.640625 3.625 11.375 3.625 11.375 C 3.328125 10.625 2.96875 10.410156 2.96875 10.410156 C 2.378906 10.007813 3.011719 10.019531 3.011719 10.019531 C 3.664063 10.0625 4 10.625 4 10.625 C 4.5 11.5 5.628906 11.414063 6 11.25 C 6 10.851563 6.042969 10.5625 6.152344 10.378906 C 4.109375 10.019531 2.996094 8.839844 3 7.207031 C 3.003906 6.242188 3.335938 5.492188 3.875 4.9375 C 3.640625 4.640625 3.480469 3.625 3.960938 3 C 5.167969 3 5.886719 3.871094 5.886719 3.871094 C 5.886719 3.871094 6.453125 3.625 7.496094 3.625 C 8.542969 3.625 9.105469 3.859375 9.105469 3.859375 C 9.105469 3.859375 9.828125 3 11.035156 3 C 11.515625 3.625 11.355469 4.640625 11.167969 4.917969 C 11.683594 5.460938 12 6.210938 12 7.207031 C 12 8.839844 10.890625 10.019531 8.851563 10.375 C 8.980469 10.570313 9 10.84375 9 11.25 C 9 12.117188 9 12.910156 9 13.125 C 9 13.375 9.226563 13.710938 9.558594 13.648438 C 12.140625 12.785156 14 10.355469 14 7.488281 C 14 3.90625 11.089844 1 7.5 1 Z"></path>
     </svg></a>
+    <a href="https://zhuanlan.zhihu.com/p/18282311637">
+    <svg t="1736917199530" class="icon" x="0px" y="0px" width="30" height="35" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1469" width="200" height="200">
+    <path d="M512 73.28A438.72 438.72 0 1 0 950.72 512 438.72 438.72 0 0 0 512 73.28z m-98.56 458.88l-16.8 66.88 23.68-20.8s53.92 61.28 64 76.48 1.44 68.96 1.44 68.96l-92.48-113.12s-29.12 101.12-68.48 124.16a97.6 97.6 0 0 1-80 6.56 342.08 342.08 0 0 0 85.44-89.76 382.88 382.88 0 0 0 39.52-119.36h-115.04s8.8-40.48 24.16-41.6 90.88 0 90.88 0l-1.76-124.8-43.2 2.24a96 96 0 0 1-32 48c-24.16 17.44-38.4 10.88-38.4 10.88s42.72-118.24 55.84-141.28 50.4-25.12 50.4-25.12l-23.04 66.72h147.84c17.6 0 18.56 40.64 18.56 40.64h-90.56v122.56s61.28-2.24 81.12 0 19.68 41.6 19.68 41.6z m329.44 160h-91.52l-65.12 46.24-13.6-46.24h-36.96v-368h208z" fill="#2c2c2c" p-id="1470"></path><path d="M602.88 691.68l54.88-41.44h43.04V364.64h-121.12v285.6h11.2l12 41.44z" fill="#2c2c2c" p-id="1471"></path></svg>
+    </a>
   </footer>
 <script src="echou.js"></script>
 <script>
@@ -113,16 +133,25 @@
         resultDiv.textContent = `Error: ${error.message}`;
       }
     }
+
     function copyToClipboard() {
-        const button = document.getElementById('copyButton');
-        navigator.clipboard.writeText(katexString).then(function() {})
-        .catch(function(err) {
-            alert('Failed to copy text: ' + err);
-        });
-        button.textContent = 'Copied';
-        setTimeout(function() {
-          button.textContent = 'Copy';
-        }, 3000);
+      const button = document.getElementById('copyButton');
+      navigator.clipboard.writeText(katexString).then(function() {})
+      .catch(function(err) {
+          alert('Failed to copy text: ' + err);
+      });
+      button.textContent = 'Copied';
+      setTimeout(function() {
+        button.textContent = 'Copy';
+      }, 3000);
+    }
+
+    function openDesmos() {
+      var param = 'func';
+      katexString = katexString.replaceAll('\\displaystyle','')
+      var paramValue = btoa(katexString);
+      var newUrl = 'calculator.html?' + param + '=' + paramValue;
+      window.open(newUrl, '_blank');
     }
 </script>
 </body>
